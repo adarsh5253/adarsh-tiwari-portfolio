@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowDown, Download, Mail, Github, Linkedin } from 'lucide-react';
+import profilePhoto from '@/assets/profile-photo.png';
 
 const HeroSection = () => {
   return (
@@ -10,11 +11,79 @@ const HeroSection = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
+          
+          {/* Profile Photo with handcrafted design */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, type: "spring", stiffness: 100 }}
+            className="relative mb-8 inline-block"
+          >
+            {/* Outer animated glow ring */}
+            <div className="absolute inset-0 -m-4 rounded-full bg-gradient-to-r from-primary via-accent to-primary opacity-75 blur-xl animate-spin-slow" style={{ animationDuration: '8s' }} />
+            
+            {/* Rotating gradient border */}
+            <motion.div
+              className="absolute inset-0 -m-2 rounded-full bg-gradient-to-r from-primary via-accent to-primary"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+            />
+            
+            {/* Secondary rotating ring (opposite direction) */}
+            <motion.div
+              className="absolute inset-0 -m-3 rounded-full border-2 border-dashed border-primary/40"
+              animate={{ rotate: -360 }}
+              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            />
+            
+            {/* Floating particles around photo */}
+            <motion.div
+              className="absolute -top-2 -right-2 w-3 h-3 rounded-full bg-primary"
+              animate={{ 
+                y: [-5, 5, -5],
+                opacity: [1, 0.5, 1],
+                scale: [1, 1.2, 1]
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+            <motion.div
+              className="absolute -bottom-1 -left-1 w-2 h-2 rounded-full bg-accent"
+              animate={{ 
+                y: [5, -5, 5],
+                opacity: [0.5, 1, 0.5],
+                scale: [1.2, 1, 1.2]
+              }}
+              transition={{ duration: 2.5, repeat: Infinity }}
+            />
+            <motion.div
+              className="absolute top-1/2 -right-4 w-2 h-2 rounded-full bg-accent"
+              animate={{ 
+                x: [-3, 3, -3],
+                opacity: [1, 0.6, 1]
+              }}
+              transition={{ duration: 3, repeat: Infinity }}
+            />
+            
+            {/* Photo container with glassmorphism */}
+            <div className="relative w-40 h-40 md:w-52 md:h-52 rounded-full overflow-hidden border-4 border-background/50 shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 z-10" />
+              <img 
+                src={profilePhoto} 
+                alt="Adarsh Tiwari" 
+                className="w-full h-full object-cover object-center"
+              />
+            </div>
+            
+            {/* Decorative corner accents */}
+            <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-primary rounded-br-lg" />
+            <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-accent rounded-tl-lg" />
+          </motion.div>
+
           {/* Greeting */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
             className="text-primary font-mono text-sm md:text-base mb-4"
           >
             👋 Hello, I'm
