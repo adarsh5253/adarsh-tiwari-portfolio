@@ -1,14 +1,13 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { GraduationCap, Award } from 'lucide-react';
+import { GraduationCap, Award, Shield } from 'lucide-react';
 
 const education = [
   {
     degree: 'B.Tech in Computer Science & Engineering',
     institution: 'Integral University, Lucknow',
     period: '2023 - 2027',
-    description: 'Currently pursuing undergraduate degree with focus on Web Development, AI, and Data Structures.',
+    description: 'Focus on Web Development, AI, and Data Structures.',
     type: 'current',
   },
   {
@@ -16,34 +15,22 @@ const education = [
     institution: 'Maharishi Vidya Mandir, Lucknow',
     period: 'Completed',
     score: '89.6%',
-    description: 'Completed higher secondary education with distinction in Science stream.',
+    description: 'Higher secondary with distinction in Science.',
     type: 'completed',
   },
   {
     degree: 'High School (10th)',
     institution: 'Maharishi Vidya Mandir, Lucknow',
     period: 'Completed',
-    description: 'Completed secondary education with strong academic foundation.',
+    description: 'Strong academic foundation.',
     type: 'completed',
   },
 ];
 
 const certifications = [
-  {
-    title: 'Data Structure using Advanced C Programming',
-    issuer: 'Integral University',
-    icon: Award,
-  },
-  {
-    title: 'AI/ML for Geodata Analysis',
-    issuer: 'ISRO',
-    icon: Award,
-  },
-  {
-    title: 'Data Analytics in Python',
-    issuer: 'IIT BHU',
-    icon: Award,
-  },
+  { title: 'Data Structure using Advanced C', issuer: 'Integral University' },
+  { title: 'AI/ML for Geodata Analysis', issuer: 'ISRO' },
+  { title: 'Data Analytics in Python', issuer: 'IIT BHU' },
 ];
 
 const EducationSection = () => {
@@ -51,9 +38,8 @@ const EducationSection = () => {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section id="education" className="py-20 relative" ref={ref}>
-      {/* Background accent */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-[150px]" />
+    <section id="education" className="py-24 relative" ref={ref}>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-neon-purple/5 rounded-full blur-[200px]" />
 
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
@@ -62,61 +48,56 @@ const EducationSection = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <span className="text-primary font-mono text-sm">04. Education</span>
+          <span className="font-mono text-xs text-primary/60 tracking-widest">// 04. EDUCATION</span>
           <h2 className="section-heading mt-2">
-            Academic <span className="gradient-text">Journey</span>
+            <span className="gradient-text">ACADEMIC_LOG</span>
           </h2>
-          <p className="section-subheading mx-auto">
-            My educational background and professional certifications.
-          </p>
+          <div className="data-line max-w-xs mx-auto mt-4" />
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Education Timeline */}
+          {/* Timeline */}
           <div>
-            <motion.h3
+            <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-xl font-bold mb-8 flex items-center gap-3"
+              className="flex items-center gap-2 mb-8"
             >
-              <GraduationCap className="text-primary" />
-              Education
-            </motion.h3>
+              <GraduationCap className="text-primary" size={20} />
+              <span className="font-cyber text-sm tracking-wider text-primary/80">EDUCATION</span>
+            </motion.div>
 
             <div className="relative">
-              {/* Timeline line */}
-              <div className="absolute left-4 top-2 bottom-2 w-0.5 bg-gradient-to-b from-primary via-accent to-primary/20" />
+              <div className="absolute left-[5px] top-2 bottom-2 w-px bg-gradient-to-b from-primary via-accent to-primary/20 shadow-[0_0_5px_hsl(var(--neon-cyan))]" />
 
-              <div className="space-y-8">
+              <div className="space-y-6">
                 {education.map((item, index) => (
                   <motion.div
                     key={item.degree}
                     initial={{ opacity: 0, x: -30 }}
                     animate={isInView ? { opacity: 1, x: 0 } : {}}
                     transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                    className="relative pl-12"
+                    className="relative pl-8"
                   >
-                    {/* Timeline dot */}
-                    <div className="absolute left-2 top-2 timeline-dot" />
+                    <div className="absolute left-0 top-3 timeline-dot" />
 
-                    <div className="glass-card glow-border p-5">
+                    <div className="holo-panel neon-border p-5">
                       <div className="flex flex-wrap items-center gap-2 mb-2">
-                        <h4 className="font-semibold">{item.degree}</h4>
+                        <h4 className="font-semibold text-foreground font-body">{item.degree}</h4>
                         {item.type === 'current' && (
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-primary/20 text-primary">
-                            Current
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">
+                            CURRENT
                           </span>
                         )}
                         {item.score && (
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-accent/20 text-accent">
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-accent/10 text-accent border border-accent/20">
                             {item.score}
                           </span>
                         )}
                       </div>
-                      <p className="text-primary text-sm mb-1">{item.institution}</p>
-                      <p className="text-muted-foreground text-sm mb-2">{item.period}</p>
-                      <p className="text-muted-foreground text-xs">{item.description}</p>
+                      <p className="text-primary text-sm font-mono">{item.institution}</p>
+                      <p className="text-muted-foreground text-xs font-mono mt-1">{item.period}</p>
+                      <p className="text-muted-foreground text-sm font-body mt-2">{item.description}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -126,15 +107,14 @@ const EducationSection = () => {
 
           {/* Certifications */}
           <div>
-            <motion.h3
+            <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-xl font-bold mb-8 flex items-center gap-3"
+              className="flex items-center gap-2 mb-8"
             >
-              <Award className="text-accent" />
-              Certifications
-            </motion.h3>
+              <Shield className="text-accent" size={20} />
+              <span className="font-cyber text-sm tracking-wider text-accent/80">CERTIFICATIONS</span>
+            </motion.div>
 
             <div className="space-y-4">
               {certifications.map((cert, index) => (
@@ -143,15 +123,15 @@ const EducationSection = () => {
                   initial={{ opacity: 0, x: 30 }}
                   animate={isInView ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                  className="glass-card glow-border p-5 group"
+                  className="holo-panel neon-border p-5 group hover:border-accent/40 transition-all duration-500"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center group-hover:glow-sm transition-all">
-                      <cert.icon className="text-accent" size={24} />
+                    <div className="w-10 h-10 rounded flex items-center justify-center bg-accent/10 border border-accent/20 group-hover:glow-purple transition-all">
+                      <Award className="text-accent" size={18} />
                     </div>
                     <div>
-                      <h4 className="font-semibold mb-1">{cert.title}</h4>
-                      <p className="text-muted-foreground text-sm">Issued by {cert.issuer}</p>
+                      <h4 className="font-semibold text-foreground font-body">{cert.title}</h4>
+                      <p className="text-muted-foreground text-sm font-mono">Issued by {cert.issuer}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -163,20 +143,18 @@ const EducationSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.7 }}
-              className="mt-8 glass-card p-6 grid grid-cols-3 gap-4 text-center"
+              className="mt-8 holo-panel neon-border p-6 grid grid-cols-3 gap-4 text-center"
             >
-              <div>
-                <div className="text-2xl font-bold gradient-text">3+</div>
-                <div className="text-muted-foreground text-xs">Projects</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold gradient-text">3</div>
-                <div className="text-muted-foreground text-xs">Certifications</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold gradient-text">89.6%</div>
-                <div className="text-muted-foreground text-xs">12th Score</div>
-              </div>
+              {[
+                { val: '3+', label: 'Projects' },
+                { val: '3', label: 'Certs' },
+                { val: '89.6%', label: '12th Score' },
+              ].map((stat) => (
+                <div key={stat.label}>
+                  <div className="font-cyber text-2xl text-primary text-glow-cyan">{stat.val}</div>
+                  <div className="text-muted-foreground text-xs font-mono">{stat.label}</div>
+                </div>
+              ))}
             </motion.div>
           </div>
         </div>

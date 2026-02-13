@@ -1,51 +1,31 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { ExternalLink, Github, Home, MessageSquare, CheckSquare } from 'lucide-react';
+import { ExternalLink, Github, Home, MessageSquare, CheckSquare, Terminal } from 'lucide-react';
 
 const projects = [
   {
-    title: 'Shelter Scape',
-    description: 'A secure and affordable accommodation platform designed to help users find perfect housing solutions with ease.',
+    title: 'SHELTER_SCAPE',
+    description: 'Secure & affordable accommodation platform with real-time availability and smart recommendations.',
     icon: Home,
-    features: [
-      'Booking history management',
-      'Smart recommendations',
-      'Real-time availability tracking',
-      'User authentication',
-    ],
+    features: ['Booking history', 'Smart recommendations', 'Real-time availability', 'Auth system'],
     techStack: ['React.js', 'JavaScript', 'HTML', 'CSS', 'JSON', 'REST API'],
-    color: 'from-blue-500 to-cyan-500',
-    gradient: 'bg-gradient-to-br from-blue-500/20 to-cyan-500/10',
+    status: 'DEPLOYED',
   },
   {
-    title: 'AI Voice Chatbot',
-    description: 'An intelligent voice-interactive chatbot leveraging Google Gemini AI for natural conversations with speech synthesis.',
+    title: 'AI_VOICE_BOT',
+    description: 'Intelligent voice-interactive chatbot leveraging Google Gemini AI with speech synthesis.',
     icon: MessageSquare,
-    features: [
-      'Voice interaction',
-      'Natural language processing',
-      'Text-to-speech responses',
-      'Context-aware conversations',
-    ],
+    features: ['Voice interaction', 'NLP processing', 'Text-to-speech', 'Context-aware'],
     techStack: ['Python', 'Google Gemini', 'gTTS', 'Speech Recognition', 'NLP'],
-    color: 'from-purple-500 to-pink-500',
-    gradient: 'bg-gradient-to-br from-purple-500/20 to-pink-500/10',
+    status: 'ACTIVE',
   },
   {
-    title: 'TaskNest',
-    description: 'A comprehensive task management application with cloud synchronization and smart notifications.',
+    title: 'TASK_NEST',
+    description: 'Task management app with Firebase cloud sync, Google auth, and push notifications.',
     icon: CheckSquare,
-    features: [
-      'Add & delete tasks',
-      'Due dates & completion tracking',
-      'Firebase Authentication (Google)',
-      'Firestore cloud sync',
-      'Push notifications',
-    ],
+    features: ['CRUD tasks', 'Due date tracking', 'Firebase Auth', 'Cloud sync', 'Notifications'],
     techStack: ['Java', 'Firebase', 'Firestore', 'Android', 'Material UI'],
-    color: 'from-green-500 to-emerald-500',
-    gradient: 'bg-gradient-to-br from-green-500/20 to-emerald-500/10',
+    status: 'STABLE',
   },
 ];
 
@@ -54,7 +34,7 @@ const ProjectsSection = () => {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section id="projects" className="py-20 relative" ref={ref}>
+    <section id="projects" className="py-24 relative" ref={ref}>
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -62,47 +42,52 @@ const ProjectsSection = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <span className="text-primary font-mono text-sm">03. Projects</span>
+          <span className="font-mono text-xs text-primary/60 tracking-widest">// 03. PROJECTS</span>
           <h2 className="section-heading mt-2">
-            Featured <span className="gradient-text">Work</span>
+            <span className="gradient-text">FEATURED_WORK</span>
           </h2>
-          <p className="section-subheading mx-auto">
-            Projects that showcase my skills and passion for building impactful solutions.
-          </p>
+          <div className="data-line max-w-xs mx-auto mt-4" />
         </motion.div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
             <motion.div
               key={project.title}
               initial={{ opacity: 0, y: 50 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
+              transition={{ duration: 0.6, delay: index * 0.15 }}
               className="group"
             >
-              <div className="glass-card glow-border h-full p-6 flex flex-col">
-                {/* Project Icon */}
-                <div className={`w-14 h-14 rounded-xl ${project.gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                  <project.icon className="text-foreground" size={28} />
+              <div className="holo-panel neon-border h-full p-6 flex flex-col hover:border-primary/40 transition-all duration-500 relative overflow-hidden">
+                {/* Top status bar */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <project.icon size={18} className="text-primary" />
+                    <span className="font-mono text-[10px] text-primary/40">PROJECT_{String(index + 1).padStart(2, '0')}</span>
+                  </div>
+                  <span className="font-mono text-[10px] text-primary/60 border border-primary/20 px-2 py-0.5 rounded">
+                    {project.status}
+                  </span>
                 </div>
 
                 {/* Title */}
-                <h3 className="text-xl font-bold mb-2 group-hover:gradient-text transition-all">
+                <h3 className="text-xl font-cyber font-bold mb-2 text-foreground group-hover:text-primary transition-colors tracking-wide">
                   {project.title}
                 </h3>
 
-                {/* Description */}
-                <p className="text-muted-foreground text-sm mb-4 flex-grow">
+                <p className="text-muted-foreground text-sm mb-4 flex-grow font-body">
                   {project.description}
                 </p>
 
                 {/* Features */}
                 <div className="mb-4">
-                  <h4 className="text-xs uppercase tracking-wider text-muted-foreground mb-2">Key Features</h4>
+                  <div className="font-mono text-[10px] text-primary/40 mb-2 flex items-center gap-1">
+                    <Terminal size={10} />FEATURES
+                  </div>
                   <ul className="space-y-1">
                     {project.features.slice(0, 3).map((feature) => (
-                      <li key={feature} className="flex items-center gap-2 text-sm">
-                        <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${project.color}`} />
+                      <li key={feature} className="flex items-center gap-2 text-sm font-body">
+                        <span className="w-1 h-1 rounded-full bg-primary" />
                         {feature}
                       </li>
                     ))}
@@ -110,37 +95,39 @@ const ProjectsSection = () => {
                 </div>
 
                 {/* Tech Stack */}
-                <div className="mb-6">
-                  <div className="flex flex-wrap gap-2">
+                <div className="mb-5">
+                  <div className="flex flex-wrap gap-1.5">
                     {project.techStack.map((tech) => (
-                      <span
-                        key={tech}
-                        className="text-xs px-2 py-1 rounded-md bg-muted/50 text-muted-foreground"
-                      >
+                      <span key={tech} className="text-[10px] font-mono px-2 py-0.5 rounded bg-primary/5 border border-primary/15 text-primary/60">
                         {tech}
                       </span>
                     ))}
                   </div>
                 </div>
 
-                {/* Action Buttons */}
+                {/* Actions */}
                 <div className="flex gap-3 mt-auto">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex-1 btn-secondary py-2 text-sm flex items-center justify-center gap-2"
+                    className="flex-1 cyber-btn py-2 text-xs flex items-center justify-center gap-2"
                   >
-                    <ExternalLink size={16} />
-                    View Details
+                    <ExternalLink size={14} className="relative z-10" />
+                    <span className="relative z-10">DETAILS</span>
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="p-2 btn-secondary"
+                    className="cyber-btn py-2 px-3"
                   >
-                    <Github size={18} />
+                    <Github size={16} className="relative z-10" />
                   </motion.button>
                 </div>
+
+                {/* Hover scan effect */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                />
               </div>
             </motion.div>
           ))}
