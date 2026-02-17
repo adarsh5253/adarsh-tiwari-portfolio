@@ -75,9 +75,10 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["Rajdhani", "sans-serif"],
-        mono: ["Share Tech Mono", "monospace"],
-        cyber: ["Orbitron", "sans-serif"],
+        sans: ["Space Grotesk", "sans-serif"],
+        display: ["Outfit", "sans-serif"],
+        mono: ["JetBrains Mono", "monospace"],
+        body: ["Space Grotesk", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
@@ -88,21 +89,6 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "neon-pulse": {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.5" },
-        },
-        "scan-line": {
-          "0%": { transform: "translateY(-100%)" },
-          "100%": { transform: "translateY(100vh)" },
-        },
-        "cyber-glitch": {
-          "0%, 100%": { transform: "translate(0)" },
-          "20%": { transform: "translate(-2px, 2px)" },
-          "40%": { transform: "translate(-2px, -2px)" },
-          "60%": { transform: "translate(2px, 2px)" },
-          "80%": { transform: "translate(2px, -2px)" },
-        },
         "float": {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-15px)" },
@@ -111,20 +97,12 @@ export default {
           "0%": { transform: "rotate(0deg)" },
           "100%": { transform: "rotate(360deg)" },
         },
-        "data-flow": {
-          "0%": { backgroundPosition: "0% 0%" },
-          "100%": { backgroundPosition: "100% 100%" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "neon-pulse": "neon-pulse 2s ease-in-out infinite",
-        "scan-line": "scan-line 8s linear infinite",
-        "cyber-glitch": "cyber-glitch 0.3s ease-in-out",
         "float": "float 4s ease-in-out infinite",
         "spin-slow": "spin-slow 20s linear infinite",
-        "data-flow": "data-flow 3s linear infinite",
       },
     },
   },
