@@ -1,31 +1,34 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { ExternalLink, Github, Home, MessageSquare, CheckSquare, Terminal } from 'lucide-react';
+import { ExternalLink, Github, Home, MessageSquare, CheckSquare, ArrowUpRight } from 'lucide-react';
 
 const projects = [
   {
-    title: 'SHELTER_SCAPE',
+    title: 'Shelter Scape',
     description: 'Secure & affordable accommodation platform with real-time availability and smart recommendations.',
     icon: Home,
     features: ['Booking history', 'Smart recommendations', 'Real-time availability', 'Auth system'],
-    techStack: ['React.js', 'JavaScript', 'HTML', 'CSS', 'JSON', 'REST API'],
-    status: 'DEPLOYED',
+    techStack: ['React.js', 'JavaScript', 'HTML', 'CSS', 'REST API'],
+    status: 'Deployed',
+    gradient: 'from-blue-500/10 to-cyan-500/5',
   },
   {
-    title: 'AI_VOICE_BOT',
+    title: 'AI Voice Bot',
     description: 'Intelligent voice-interactive chatbot leveraging Google Gemini AI with speech synthesis.',
     icon: MessageSquare,
     features: ['Voice interaction', 'NLP processing', 'Text-to-speech', 'Context-aware'],
-    techStack: ['Python', 'Google Gemini', 'gTTS', 'Speech Recognition', 'NLP'],
-    status: 'ACTIVE',
+    techStack: ['Python', 'Google Gemini', 'gTTS', 'Speech Recognition'],
+    status: 'Active',
+    gradient: 'from-violet-500/10 to-purple-500/5',
   },
   {
-    title: 'TASK_NEST',
-    description: 'Task management app with Firebase cloud sync, Google auth, and push notifications.',
+    title: 'TaskNest',
+    description: 'Android task management app with Firebase cloud sync, Google auth, and push notifications.',
     icon: CheckSquare,
-    features: ['CRUD tasks', 'Due date tracking', 'Firebase Auth', 'Cloud sync', 'Notifications'],
-    techStack: ['Java', 'Firebase', 'Firestore', 'Android', 'Material UI'],
-    status: 'STABLE',
+    features: ['CRUD tasks', 'Due date tracking', 'Firebase Auth', 'Cloud sync'],
+    techStack: ['Java', 'Firebase', 'Android', 'Material UI'],
+    status: 'Stable',
+    gradient: 'from-emerald-500/10 to-teal-500/5',
   },
 ];
 
@@ -34,22 +37,21 @@ const ProjectsSection = () => {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section id="projects" className="py-24 relative" ref={ref}>
+    <section id="projects" className="py-28 relative" ref={ref}>
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <span className="font-mono text-xs text-primary/60 tracking-widest">// 03. PROJECTS</span>
-          <h2 className="section-heading mt-2">
-            <span className="gradient-text">FEATURED_WORK</span>
+          <span className="text-xs font-mono text-primary/50 tracking-widest uppercase">Projects</span>
+          <h2 className="section-heading mt-3">
+            <span className="gradient-text">Featured Work</span>
           </h2>
-          <div className="data-line max-w-xs mx-auto mt-4" />
+          <div className="data-line max-w-xs mx-auto mt-6" />
         </motion.div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-3 gap-7">
           {projects.map((project, index) => (
             <motion.div
               key={project.title}
@@ -58,76 +60,67 @@ const ProjectsSection = () => {
               transition={{ duration: 0.6, delay: index * 0.15 }}
               className="group"
             >
-              <div className="holo-panel neon-border h-full p-6 flex flex-col hover:border-primary/40 transition-all duration-500 relative overflow-hidden">
-                {/* Top status bar */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
-                    <project.icon size={18} className="text-primary" />
-                    <span className="font-mono text-[10px] text-primary/40">PROJECT_{String(index + 1).padStart(2, '0')}</span>
+              <div className="glass-card float-3d h-full p-7 flex flex-col relative overflow-hidden">
+                {/* Gradient accent */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
+
+                {/* Header */}
+                <div className="flex items-center justify-between mb-5 relative z-10">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-primary/10 border border-primary/15 group-hover:glow-blue transition-all duration-500">
+                    <project.icon className="text-primary" size={22} />
                   </div>
-                  <span className="font-mono text-[10px] text-primary/60 border border-primary/20 px-2 py-0.5 rounded">
+                  <span className="text-[11px] font-mono text-primary/60 px-3 py-1 rounded-full bg-primary/5 border border-primary/15">
                     {project.status}
                   </span>
                 </div>
 
-                {/* Title */}
-                <h3 className="text-xl font-cyber font-bold mb-2 text-foreground group-hover:text-primary transition-colors tracking-wide">
+                <h3 className="text-xl font-display font-bold mb-2 text-foreground group-hover:text-primary transition-colors relative z-10">
                   {project.title}
                 </h3>
 
-                <p className="text-muted-foreground text-sm mb-4 flex-grow font-body">
+                <p className="text-muted-foreground text-sm mb-5 flex-grow font-body relative z-10">
                   {project.description}
                 </p>
 
                 {/* Features */}
-                <div className="mb-4">
-                  <div className="font-mono text-[10px] text-primary/40 mb-2 flex items-center gap-1">
-                    <Terminal size={10} />FEATURES
-                  </div>
-                  <ul className="space-y-1">
-                    {project.features.slice(0, 3).map((feature) => (
-                      <li key={feature} className="flex items-center gap-2 text-sm font-body">
-                        <span className="w-1 h-1 rounded-full bg-primary" />
-                        {feature}
+                <div className="mb-5 relative z-10">
+                  <ul className="space-y-1.5">
+                    {project.features.slice(0, 3).map((f) => (
+                      <li key={f} className="flex items-center gap-2 text-sm font-body text-muted-foreground">
+                        <span className="w-1 h-1 rounded-full bg-primary/60" />
+                        {f}
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                {/* Tech Stack */}
-                <div className="mb-5">
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.techStack.map((tech) => (
-                      <span key={tech} className="text-[10px] font-mono px-2 py-0.5 rounded bg-primary/5 border border-primary/15 text-primary/60">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+                {/* Tech stack */}
+                <div className="flex flex-wrap gap-1.5 mb-6 relative z-10">
+                  {project.techStack.map((tech) => (
+                    <span key={tech} className="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-primary/5 border border-primary/10 text-primary/50">
+                      {tech}
+                    </span>
+                  ))}
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-3 mt-auto">
+                <div className="flex gap-3 mt-auto relative z-10">
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex-1 cyber-btn py-2 text-xs flex items-center justify-center gap-2"
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="flex-1 btn-premium py-2.5 text-xs flex items-center justify-center gap-2"
                   >
-                    <ExternalLink size={14} className="relative z-10" />
-                    <span className="relative z-10">DETAILS</span>
+                    <span className="relative z-10">View Details</span>
+                    <ArrowUpRight size={14} className="relative z-10" />
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="cyber-btn py-2 px-3"
+                    className="btn-premium py-2.5 px-3.5"
                   >
                     <Github size={16} className="relative z-10" />
                   </motion.button>
                 </div>
-
-                {/* Hover scan effect */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                />
               </div>
             </motion.div>
           ))}
