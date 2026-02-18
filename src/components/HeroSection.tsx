@@ -1,6 +1,56 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDown, Download, Mail, Github, Linkedin, Sparkles } from 'lucide-react';
 import profilePhoto from '@/assets/profile-photo.png';
+import { useState, useEffect } from 'react';
+
+const roles = ['Web Developer', 'Android Developer', 'AI Explorer', 'Problem Solver'];
+
+const TypingAnimation = () => {
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [displayed, setDisplayed] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    const current = roles[roleIndex];
+
+    if (isPaused) {
+      const pauseTimer = setTimeout(() => {
+        setIsPaused(false);
+        setIsDeleting(true);
+      }, 1800);
+      return () => clearTimeout(pauseTimer);
+    }
+
+    if (isDeleting) {
+      if (displayed.length === 0) {
+        setIsDeleting(false);
+        setRoleIndex((prev) => (prev + 1) % roles.length);
+        return;
+      }
+      const timer = setTimeout(() => setDisplayed((d) => d.slice(0, -1)), 50);
+      return () => clearTimeout(timer);
+    }
+
+    if (displayed.length < current.length) {
+      const timer = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 90);
+      return () => clearTimeout(timer);
+    }
+
+    setIsPaused(true);
+  }, [displayed, isDeleting, isPaused, roleIndex]);
+
+  return (
+    <span className="inline-flex items-center gap-0">
+      <span className="gradient-text text-glow">{displayed}</span>
+      <motion.span
+        className="inline-block w-[3px] h-[1em] ml-1 rounded-sm bg-primary align-middle"
+        animate={{ opacity: [1, 0, 1] }}
+        transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
+      />
+    </span>
+  );
+};
 
 const HeroSection = () => {
   return (
@@ -39,9 +89,9 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-xl md:text-2xl text-muted-foreground font-body font-light mb-4 max-w-lg mx-auto lg:mx-0"
+              className="text-xl md:text-2xl font-body font-light mb-4 max-w-lg mx-auto lg:mx-0 min-h-[2rem] flex items-center justify-center lg:justify-start"
             >
-              Computer Science &amp; Android Developer
+              <TypingAnimation />
             </motion.p>
 
             <motion.p
