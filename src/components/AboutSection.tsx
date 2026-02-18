@@ -1,20 +1,76 @@
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { Code2, Brain, Lightbulb, Rocket } from 'lucide-react';
+import { useTilt } from '@/hooks/use-tilt';
 
 const highlights = [
-  { icon: Code2, title: 'Web & Mobile Dev', desc: 'Modern apps with React, Android & Tailwind', stat: '3+', statLabel: 'Projects' },
-  { icon: Brain, title: 'AI / ML', desc: 'Intelligent solutions with Python & NLP', stat: '2', statLabel: 'Certs' },
-  { icon: Lightbulb, title: 'DSA Expert', desc: 'Algorithmic thinking & problem solving', stat: '500+', statLabel: 'Problems' },
-  { icon: Rocket, title: 'Innovation', desc: 'Always exploring emerging technologies', stat: '∞', statLabel: 'Curiosity' },
+  { icon: Code2, title: 'Web & Mobile Dev', desc: 'Modern apps with React, Android & Tailwind', stat: '3+', statLabel: 'Projects', color: 'hsl(210 100% 60%)' },
+  { icon: Brain, title: 'AI / ML', desc: 'Intelligent solutions with Python & NLP', stat: '2', statLabel: 'Certs', color: 'hsl(250 90% 68%)' },
+  { icon: Lightbulb, title: 'DSA Expert', desc: 'Algorithmic thinking & problem solving', stat: '500+', statLabel: 'Problems', color: 'hsl(160 80% 50%)' },
+  { icon: Rocket, title: 'Innovation', desc: 'Always exploring emerging technologies', stat: '∞', statLabel: 'Curiosity', color: 'hsl(330 90% 65%)' },
 ];
+
+const StatCard = ({ item, index, isInView }: { item: typeof highlights[0]; index: number; isInView: boolean }) => {
+  const { ref, glareRef, handleMouseMove, handleMouseLeave } = useTilt({ max: 14, scale: 1.04 });
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30, rotateX: 10 }}
+      animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
+      transition={{ duration: 0.6, delay: 0.3 + index * 0.1, ease: [0.23, 1, 0.32, 1] }}
+      style={{ perspective: '1000px' }}
+    >
+      <div
+        ref={ref}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        className="relative cursor-pointer"
+        style={{ willChange: 'transform' }}
+      >
+        <div ref={glareRef} className="absolute inset-0 rounded-2xl z-20 pointer-events-none opacity-0 transition-opacity duration-200" />
+        <div
+          className="absolute -inset-px rounded-2xl opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+          style={{ boxShadow: `0 0 40px ${item.color}25` }}
+        />
+        <div className="glass-card p-6 group relative">
+          <div
+            className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 transition-all duration-500 group-hover:scale-110"
+            style={{ background: `${item.color}18`, border: `1px solid ${item.color}30` }}
+          >
+            <item.icon style={{ color: item.color }} size={20} />
+          </div>
+          <h3 className="font-display font-semibold text-sm text-foreground mb-1">{item.title}</h3>
+          <p className="text-muted-foreground text-xs font-body mb-4">{item.desc}</p>
+          <div className="flex items-baseline gap-1.5 pt-3 border-t border-border/50">
+            <span className="font-display text-2xl font-bold" style={{ color: item.color, textShadow: `0 0 15px ${item.color}60` }}>
+              {item.stat}
+            </span>
+            <span className="text-muted-foreground text-[10px] font-mono">{item.statLabel}</span>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
 const AboutSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
+  const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   return (
-    <section id="about" className="py-28 relative" ref={ref}>
+    <section id="about" className="py-28 relative overflow-hidden" ref={ref}>
+      {/* Scroll-parallax glow blob */}
+      <motion.div
+        style={{ y }}
+        className="absolute -left-40 top-1/4 w-[500px] h-[500px] rounded-full pointer-events-none"
+        animate={{ opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 6, repeat: Infinity }}
+      >
+        <div className="w-full h-full rounded-full" style={{ background: 'radial-gradient(circle, hsl(210 100% 60% / 0.05) 0%, transparent 70%)' }} />
+      </motion.div>
+
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -23,9 +79,7 @@ const AboutSection = () => {
           className="text-center mb-20"
         >
           <span className="text-xs font-mono text-primary/50 tracking-widest uppercase">About Me</span>
-          <h2 className="section-heading mt-3">
-            <span className="gradient-text">Who I Am</span>
-          </h2>
+          <h2 className="section-heading mt-3"><span className="gradient-text">Who I Am</span></h2>
           <div className="data-line max-w-xs mx-auto mt-6" />
         </motion.div>
 
@@ -42,7 +96,7 @@ const AboutSection = () => {
                 I specialize in{' '}
                 <span className="text-primary">Web Development</span>,{' '}
                 <span className="text-accent">Artificial Intelligence</span>, and{' '}
-                <span className="text-neon-pink">Android Development</span>.
+                <span style={{ color: 'hsl(330 90% 65%)' }}>Android Development</span>.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-6 font-body text-lg">
                 My journey in tech is driven by a relentless curiosity to understand how things work
@@ -55,25 +109,9 @@ const AboutSection = () => {
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-2 gap-5" style={{ perspective: '1000px' }}>
             {highlights.map((item, index) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                className="glass-card float-3d p-6 group"
-              >
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center bg-primary/10 border border-primary/15 mb-4 group-hover:glow-blue transition-all duration-500">
-                  <item.icon className="text-primary" size={20} />
-                </div>
-                <h3 className="font-display font-semibold text-sm text-foreground mb-1">{item.title}</h3>
-                <p className="text-muted-foreground text-xs font-body mb-4">{item.desc}</p>
-                <div className="flex items-baseline gap-1.5 pt-3 border-t border-border/50">
-                  <span className="font-display text-2xl font-bold text-primary text-glow">{item.stat}</span>
-                  <span className="text-muted-foreground text-[10px] font-mono">{item.statLabel}</span>
-                </div>
-              </motion.div>
+              <StatCard key={item.title} item={item} index={index} isInView={isInView} />
             ))}
           </div>
         </div>
