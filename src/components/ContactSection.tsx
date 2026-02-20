@@ -4,7 +4,7 @@ import { Mail, Phone, MapPin, Send, Loader2, Linkedin, Github } from 'lucide-rea
 
 const ContactSection = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: true, margin: '-80px' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
 
@@ -18,24 +18,27 @@ const ContactSection = () => {
   };
 
   const contactInfo = [
-    { icon: Mail, label: 'Email', value: 'adarshtiwari5122002@gmail.com', href: 'mailto:adarshtiwari5122002@gmail.com' },
-    { icon: Phone, label: 'Phone', value: '+91 6388143458', href: 'tel:+916388143458' },
-    { icon: Linkedin, label: 'LinkedIn', value: 'Adarsh Tiwari', href: 'https://www.linkedin.com/in/adarsh-tiwari-424a45315' },
-    { icon: Github, label: 'GitHub', value: 'adarsh5253', href: 'https://github.com/users/adarsh5253/succession/invitation' },
-    { icon: MapPin, label: 'Location', value: 'Lucknow, UP, India', href: '#' },
+    { icon: Mail, label: 'Email', value: 'adarshtiwari5122002@gmail.com', href: 'mailto:adarshtiwari5122002@gmail.com', color: 'hsl(190 100% 55%)' },
+    { icon: Phone, label: 'Phone', value: '+91 6388143458', href: 'tel:+916388143458', color: 'hsl(270 100% 70%)' },
+    { icon: Linkedin, label: 'LinkedIn', value: 'Adarsh Tiwari', href: 'https://www.linkedin.com/in/adarsh-tiwari-424a45315', color: 'hsl(210 100% 60%)' },
+    { icon: Github, label: 'GitHub', value: 'adarsh5253', href: 'https://github.com/users/adarsh5253/succession/invitation', color: 'hsl(330 90% 65%)' },
+    { icon: MapPin, label: 'Location', value: 'Lucknow, UP, India', href: '#', color: 'hsl(160 80% 50%)' },
   ];
 
   return (
     <section id="contact" className="py-28 relative" ref={ref}>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-[250px]" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full blur-[250px] pointer-events-none"
+        style={{ background: 'hsl(190 100% 55% / 0.05)' }} />
 
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          initial={{ opacity: 0, y: 50, rotateX: 14 }}
+          animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
+          transition={{ duration: 0.85 }}
           className="text-center mb-20"
+          style={{ perspective: '800px' }}
         >
-          <span className="text-xs font-mono text-primary/50 tracking-widest uppercase">Contact</span>
+          <span className="text-xs font-mono tracking-widest uppercase" style={{ color: 'hsl(190 100% 55% / 0.5)' }}>Contact</span>
           <h2 className="section-heading mt-3">
             <span className="gradient-text">Get In Touch</span>
           </h2>
@@ -45,12 +48,13 @@ const ContactSection = () => {
         <div className="grid lg:grid-cols-5 gap-12 max-w-6xl mx-auto">
           {/* Contact info */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            initial={{ opacity: 0, x: -80, rotateY: -18 }}
+            animate={isInView ? { opacity: 1, x: 0, rotateY: 0 } : {}}
+            transition={{ duration: 0.9, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
+            style={{ perspective: '1000px' }}
             className="lg:col-span-2 space-y-6"
           >
-            <div className="glass-card float-3d p-7">
+            <div className="holo-card float-3d p-7">
               <h3 className="font-display font-semibold text-lg text-foreground mb-3">Let's work together</h3>
               <p className="text-muted-foreground mb-8 font-body">
                 Open to discussing projects, creative ideas, or collaboration opportunities.
@@ -63,13 +67,21 @@ const ContactSection = () => {
                     href={info.href}
                     target={info.href.startsWith('http') ? '_blank' : undefined}
                     rel={info.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ delay: 0.3 + index * 0.08 }}
-                    className="flex items-center gap-4 p-3.5 rounded-xl hover:bg-primary/5 transition-all group border border-transparent hover:border-primary/10"
+                    initial={{ opacity: 0, x: -30, rotateY: -10 }}
+                    animate={isInView ? { opacity: 1, x: 0, rotateY: 0 } : {}}
+                    transition={{ delay: 0.3 + index * 0.09, ease: [0.23, 1, 0.32, 1] }}
+                    className="flex items-center gap-4 p-3.5 rounded-xl transition-all group border border-transparent"
+                    style={{ perspective: '600px' }}
+                    whileHover={{
+                      background: `${info.color}08`,
+                      borderColor: `${info.color}20`,
+                      x: 4,
+                    }}
                   >
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-primary/8 border border-primary/12 group-hover:glow-blue transition-all duration-500 flex-shrink-0">
-                      <info.icon className="text-primary" size={16} />
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-500"
+                      style={{ background: `${info.color}10`, border: `1px solid ${info.color}25` }}
+                    >
+                      <info.icon style={{ color: info.color }} size={16} />
                     </div>
                     <div className="min-w-0">
                       <p className="text-muted-foreground text-[11px] font-mono">{info.label}</p>
@@ -83,12 +95,13 @@ const ContactSection = () => {
 
           {/* Form */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            initial={{ opacity: 0, x: 80, rotateY: 18 }}
+            animate={isInView ? { opacity: 1, x: 0, rotateY: 0 } : {}}
+            transition={{ duration: 0.9, delay: 0.3, ease: [0.23, 1, 0.32, 1] }}
+            style={{ perspective: '1000px' }}
             className="lg:col-span-3"
           >
-            <form onSubmit={handleSubmit} className="glass-card float-3d p-7 md:p-9">
+            <form onSubmit={handleSubmit} className="holo-card float-3d p-7 md:p-9">
               <div className="grid md:grid-cols-2 gap-5 mb-5">
                 <div>
                   <label className="block text-xs font-body text-muted-foreground mb-2">Name</label>
