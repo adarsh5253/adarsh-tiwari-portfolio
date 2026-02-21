@@ -2,6 +2,7 @@ import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { Database, Globe, Cpu, BrainCircuit, Wrench } from 'lucide-react';
 import { useTilt } from '@/hooks/use-tilt';
+import SkillsRadarChart from './SkillsRadarChart';
 
 const skillCategories = [
   { title: 'Languages', icon: Cpu, skills: ['Java', 'C', 'JavaScript', 'Python'], color: 'hsl(190 100% 55%)' },
@@ -140,48 +141,65 @@ const SkillsSection = () => {
           ))}
         </div>
 
-        {/* Proficiency panel */}
-        <motion.div
-          initial={{ opacity: 0, y: 60, rotateX: 15 }}
-          animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
-          transition={{ duration: 0.9, delay: 0.6, ease: [0.23, 1, 0.32, 1] }}
-          style={{ perspective: '1000px' }}
-          className="mt-16 max-w-3xl mx-auto"
-        >
-          <div className="holo-card p-8 md:p-10 relative">
-            {/* Holographic label */}
-            <div className="absolute top-4 right-4 text-[9px] font-mono px-2 py-0.5 rounded-full"
-              style={{ background: 'hsl(190 100% 55% / 0.1)', border: '1px solid hsl(190 100% 55% / 0.2)', color: 'hsl(190 100% 65%)' }}>
-              HOLOGRAM
+        {/* Radar Chart + Proficiency side by side */}
+        <div className="mt-16 max-w-5xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+          {/* Radar chart */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, rotateY: -15 }}
+            animate={isInView ? { opacity: 1, scale: 1, rotateY: 0 } : {}}
+            transition={{ duration: 1, delay: 0.5, ease: [0.23, 1, 0.32, 1] }}
+            style={{ perspective: '1000px' }}
+          >
+            <div className="holo-card p-8 relative">
+              <div className="absolute top-4 right-4 text-[9px] font-mono px-2 py-0.5 rounded-full"
+                style={{ background: 'hsl(270 100% 70% / 0.1)', border: '1px solid hsl(270 100% 70% / 0.2)', color: 'hsl(270 100% 78%)' }}>
+                RADAR
+              </div>
+              <h3 className="font-display font-semibold text-center mb-6 text-foreground">Skill Radar</h3>
+              <SkillsRadarChart />
             </div>
-            <h3 className="font-display font-semibold text-center mb-8 text-foreground">Proficiency Levels</h3>
-            <div className="space-y-5">
-              {proficiency.map((skill, i) => (
-                <div key={skill.name}>
-                  <div className="flex justify-between text-sm mb-2 font-body">
-                    <span className="text-foreground font-medium">{skill.name}</span>
-                    <span className="font-mono text-xs" style={{ color: skill.color }}>{skill.level}%</span>
+          </motion.div>
+
+          {/* Proficiency panel */}
+          <motion.div
+            initial={{ opacity: 0, y: 60, rotateX: 15 }}
+            animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
+            transition={{ duration: 0.9, delay: 0.6, ease: [0.23, 1, 0.32, 1] }}
+            style={{ perspective: '1000px' }}
+          >
+            <div className="holo-card p-8 md:p-10 relative">
+              <div className="absolute top-4 right-4 text-[9px] font-mono px-2 py-0.5 rounded-full"
+                style={{ background: 'hsl(190 100% 55% / 0.1)', border: '1px solid hsl(190 100% 55% / 0.2)', color: 'hsl(190 100% 65%)' }}>
+                HOLOGRAM
+              </div>
+              <h3 className="font-display font-semibold text-center mb-8 text-foreground">Proficiency Levels</h3>
+              <div className="space-y-5">
+                {proficiency.map((skill, i) => (
+                  <div key={skill.name}>
+                    <div className="flex justify-between text-sm mb-2 font-body">
+                      <span className="text-foreground font-medium">{skill.name}</span>
+                      <span className="font-mono text-xs" style={{ color: skill.color }}>{skill.level}%</span>
+                    </div>
+                    <div className="h-2 rounded-full overflow-hidden relative" style={{ background: 'hsl(222 40% 8%)' }}>
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={isInView ? { width: `${skill.level}%` } : {}}
+                        transition={{ duration: 1.6, delay: 0.8 + i * 0.12, ease: [0.23, 1, 0.32, 1] }}
+                        className="h-full rounded-full relative overflow-hidden"
+                        style={{
+                          background: `linear-gradient(90deg, ${skill.color}, ${skill.color}cc, hsl(270 100% 70% / 0.5))`,
+                          boxShadow: `0 0 14px ${skill.color}70, 0 0 28px ${skill.color}30`,
+                        }}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_ease-in-out_infinite]" />
+                      </motion.div>
+                    </div>
                   </div>
-                  <div className="h-2 rounded-full overflow-hidden relative" style={{ background: 'hsl(222 40% 8%)' }}>
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={isInView ? { width: `${skill.level}%` } : {}}
-                      transition={{ duration: 1.6, delay: 0.8 + i * 0.12, ease: [0.23, 1, 0.32, 1] }}
-                      className="h-full rounded-full relative overflow-hidden"
-                      style={{
-                        background: `linear-gradient(90deg, ${skill.color}, ${skill.color}cc, hsl(270 100% 70% / 0.5))`,
-                        boxShadow: `0 0 14px ${skill.color}70, 0 0 28px ${skill.color}30`,
-                      }}
-                    >
-                      {/* Shimmer on bar */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_ease-in-out_infinite]" />
-                    </motion.div>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

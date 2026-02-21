@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 
@@ -9,6 +9,33 @@ const navLinks = [
   { name: 'Education', href: '#education' },
   { name: 'Contact', href: '#contact' },
 ];
+
+const smoothScrollTo = (targetId: string) => {
+  const el = document.querySelector(targetId);
+  if (!el) return;
+
+  // Add a brief 3D perspective zoom effect to the page
+  const main = document.querySelector('main');
+  if (main) {
+    main.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s ease';
+    main.style.transform = 'perspective(1200px) scale(0.95) rotateX(2deg)';
+    main.style.opacity = '0.7';
+
+    setTimeout(() => {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      main.style.transform = 'perspective(1200px) scale(1) rotateX(0deg)';
+      main.style.opacity = '1';
+    }, 250);
+
+    setTimeout(() => {
+      main.style.transition = '';
+      main.style.transform = '';
+      main.style.opacity = '';
+    }, 900);
+  } else {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+};
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -42,6 +69,7 @@ const Navbar = () => {
             <motion.a
               key={link.name}
               href={link.href}
+              onClick={(e) => { e.preventDefault(); smoothScrollTo(link.href); }}
               className="px-4 py-2 text-sm font-body text-muted-foreground hover:text-foreground transition-colors relative group"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -53,6 +81,7 @@ const Navbar = () => {
           ))}
           <motion.a
             href="#contact"
+            onClick={(e) => { e.preventDefault(); smoothScrollTo('#contact'); }}
             className="btn-premium btn-primary ml-4 py-2 px-5 text-xs rounded-lg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -83,12 +112,13 @@ const Navbar = () => {
                   key={link.name}
                   href={link.href}
                   className="text-sm text-muted-foreground hover:text-foreground py-3 px-4 hover:bg-primary/5 rounded-lg transition-all"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); smoothScrollTo(link.href); }}
                 >
                   {link.name}
                 </a>
               ))}
-              <a href="#contact" className="btn-premium btn-primary text-center mt-2 py-2.5 text-xs rounded-lg" onClick={() => setIsMobileMenuOpen(false)}>
+              <a href="#contact" className="btn-premium btn-primary text-center mt-2 py-2.5 text-xs rounded-lg"
+                onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); smoothScrollTo('#contact'); }}>
                 Let's Talk
               </a>
             </div>
